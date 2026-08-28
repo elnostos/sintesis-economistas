@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Árbol del Pensamiento Económico</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap');
+
+  :root {
+    --bg: #faf9f6;
+    --bg-card: #ffffff;
+    --bg-hover: #f0eeea;
+    --text: #2c2c2c;
+    --text-muted: #5a5a5a;
+    --text-bright: #1a1a1a;
+    --border: #d5d0c8;
+    --border-strong: #b0a898;
+    --shadow: rgba(0,0,0,0.08);
+    --focus-ring: #2563eb;
+
+    --griegos:         #5b4a1c;
+    --escolastica:     #7b5e00;
+    --mercantilismo:   #8b4513;
+    --fisiocracia:     #1a7a42;
+    --clasica:         #2563eb;
+    --marxismo:        #be1e2d;
+    --marginalismo:    #7b2d8b;
+    --neoclasica:      #0369a1;
+    --austriaca:       #b45309;
+    --keynesiana:      #0f766e;
+    --chicago:         #c2410c;
+    --institucionalismo:#0e7490;
+    --postkeynesiana:  #0d9488;
+    --desarrollo:      #7c3aed;
+    --conductual:      #dc2626;
+    --contemporanea:   #1d4ed8;
+    --premodernos:     #6d5c3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+    font-size: 18px;
+  }
+
+  .skip-link {
+    position: absolute; top: -100px; left: 1rem;
+    background: var(--focus-ring); color: #fff;
+    padding: 0.5rem 1rem; border-radius: 4px; z-index: 999; font-weight: 600;
+  }
+  .skip-link:focus { top: 1rem; }
+
+  /* ===== HEADER ===== */
+  header {
+    text-align: center;
+    padding: 2.5rem 1.5rem 1rem;
+    border-bottom: 2px solid var(--border);
+    background: #fff;
+  }
+
+  header h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 900;
+    font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+    color: var(--text-bright);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+  }
+
+  header .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: 0 auto 0.6rem;
+  }
+
+  .course-info {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0.6rem 1rem;
+    background: #f5f3ef;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .course-info strong { color: var(--text-bright); font-weight: 700; }
+
+  .search-bar {
+    max-width: 440px;
+    margin: 1rem auto 0;
+    position: relative;
+  }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--bg);
+    border: 2px solid var(--border-strong);
+    color: var(--text-bright);
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    padding: 0.75rem 1rem 0.75rem 2.8rem;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-bar input:focus {
+    border-color: var(--focus-ring);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+  }
+
+  .search-bar input::placeholder { color: var(--text-muted); }
+
+  .search-icon {
+    position: absolute; left: 0.9rem; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted); font-size: 1.2rem; pointer-events: none;
+  }
+
+  /* ===== LEYENDA ===== */
+  .legend {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.5rem 1rem; padding: 0.9rem 1.5rem;
+    border-bottom: 2px solid var(--border);
+    background: #fff; position: sticky; top: 0; z-index: 100;
+  }
+
+  .legend-item {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.85rem; font-weight: 600; color: var(--text);
+    cursor: pointer; transition: opacity 0.2s; user-select: none;
+    padding: 0.2rem 0.4rem; border-radius: 4px;
+    background: none; border: none; font-family: inherit;
+  }
+
+  .legend-item:hover { background: var(--bg-hover); }
+  .legend-item:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+  .legend-item.dimmed { opacity: 0.2; }
+
+  .legend-swatch {
+    width: 18px; height: 18px; border-radius: 3px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fff;
+  }
+
+  /* ===== TIMELINE ===== */
+  .timeline {
+    max-width: 1200px; margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+  }
+
+  .era { margin-bottom: 1.5rem; }
+  .era.era-hidden { display: none; }
+
+  .era-label {
+    font-family: 'Merriweather', serif;
+    font-weight: 700; font-size: 1.2rem;
+    color: var(--text-bright); text-align: center;
+    padding: 1.5rem 0 0.3rem; position: relative;
+  }
+
+  .era-label::after {
+    content: ''; display: block; width: 80px; height: 3px;
+    background: var(--border-strong); margin: 0.5rem auto 0; border-radius: 2px;
+  }
+
+  .era-desc {
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0.3rem auto 0.6rem;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* Resultados de búsqueda: contenedor flotante */
+  .search-results {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 2rem;
+  }
+
+  .search-results.active {
+    display: block;
+  }
+
+  .search-results-header {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    padding: 0.5rem 0 0.8rem;
+  }
+
+  .search-results-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  .timeline.searching { display: none; }
+  .quiz-section.searching { display: none; }
+  .site-footer.searching { display: none; }
+
+  /* ===== CUESTIONARIO ===== */
+  .quiz-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--text-bright);
+    text-align: center;
+    margin-bottom: 0.3rem;
+  }
+
+  .quiz-intro {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .quiz-q {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .quiz-q p {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-bright);
+    margin-bottom: 0.7rem;
+  }
+
+  .quiz-q label {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    margin-bottom: 0.3rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text);
+    transition: background 0.15s;
+  }
+
+  .quiz-q label:hover { background: var(--bg-hover); }
+
+  .quiz-q input[type="radio"] {
+    margin-right: 0.5rem;
+    accent-color: var(--focus-ring);
+    transform: scale(1.15);
+  }
+
+  .quiz-btn {
+    display: block;
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 2.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--focus-ring);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .quiz-btn:hover { background: #1d4ed8; }
+  .quiz-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+
+  .quiz-result {
+    display: none;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .quiz-result.visible { display: block; }
+
+  .quiz-result h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 1.3rem;
+    color: var(--text-bright);
+    margin-bottom: 0.3rem;
+  }
+
+  .quiz-result .result-school {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.8rem;
+  }
+
+  .quiz-result .result-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text);
+    text-align: left;
+  }
+
+  .quiz-result .result-recipe {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: 8px;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .quiz-result .result-recipe strong {
+    color: var(--text-bright);
+  }
+
+  .quiz-reset {
+    margin-top: 1rem;
+    padding: 0.5rem 1.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .quiz-reset:hover { background: var(--bg-hover); }
+
+  /* ===== TARJETAS ===== */
+  .economists-grid {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.8rem; padding: 0.5rem 0;
+  }
+
+  .economist-node {
+    position: relative; background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-left: 5px solid var(--node-color, var(--border));
+    border-radius: 10px; padding: 0.8rem 1rem;
+    cursor: pointer; transition: all 0.2s ease;
+    width: 240px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 0.8rem;
+    font-family: inherit; text-align: left; color: inherit;
+  }
+
+  .economist-node:hover {
+    background: var(--bg-hover);
+    border-color: var(--node-color, var(--border));
+    box-shadow: 0 4px 16px var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .economist-node:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+  .economist-node.active {
+    border-color: var(--node-color, var(--border));
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+
+  .economist-node.school-dimmed { opacity: 0.1; pointer-events: none; }
+  .economist-node.search-hidden { display: none !important; }
+
+  .node-avatar {
+    width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+    background: var(--bg); border: 2px solid var(--border);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+  }
+
+  .node-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .node-avatar .initials {
+    font-family: 'Merriweather', serif;
+    font-weight: 700; font-size: 0.9rem; color: var(--text-muted);
+  }
+
+  .node-info { flex: 1; min-width: 0; }
+
+  .node-name { font-weight: 700; font-size: 0.95rem; color: var(--text-bright); line-height: 1.3; }
+
+  .node-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; color: var(--text-muted); margin-top: 0.1rem;
+  }
+
+  .node-school-tag {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--node-color, var(--text-muted)); margin-top: 0.2rem;
+  }
+
+  .node-school-tag .tag-symbol { font-size: 0.8rem; }
+
+  /* ===== PANEL LATERAL ===== */
+  .overlay {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; background: rgba(0,0,0,0.25); z-index: 199;
+  }
+  .overlay.visible { display: block; }
+
+  .bio-panel {
+    display: none; position: fixed; top: 0; right: 0;
+    width: min(520px, 94vw); height: 100vh;
+    background: #fff; border-left: 3px solid var(--panel-color, var(--border));
+    z-index: 200; overflow-y: auto;
+    box-shadow: -4px 0 30px rgba(0,0,0,0.12);
+    animation: slideIn 0.25s ease;
+  }
+  .bio-panel.visible { display: block; }
+
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .bio-close {
+    position: sticky; top: 0; display: flex; justify-content: flex-end;
+    padding: 0.8rem 1rem; background: #fff; z-index: 1;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bio-close button {
+    background: var(--bg); border: 2px solid var(--border-strong);
+    color: var(--text); font-size: 1.1rem; font-weight: 700;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  }
+
+  .bio-close button:hover { background: var(--bg-hover); border-color: var(--text-muted); }
+  .bio-close button:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+  .bio-content { padding: 1.5rem 2rem 3rem; }
+
+  .bio-avatar {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: var(--bg); border: 3px solid var(--panel-color, var(--border));
+    overflow: hidden; margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .bio-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .bio-avatar .initials-lg {
+    font-family: 'Merriweather', serif;
+    font-weight: 700; font-size: 1.8rem; color: var(--text-muted);
+  }
+
+  .bio-content h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 900; font-size: 1.5rem;
+    color: var(--text-bright); margin-bottom: 0.2rem;
+  }
+
+  .bio-content .bio-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.3rem;
+  }
+
+  .bio-content .bio-school {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 1.2rem;
+    padding: 0.3rem 0.7rem; border-radius: 4px;
+  }
+
+  .bio-content .bio-text {
+    font-size: 1.05rem; line-height: 1.8;
+    color: var(--text); margin-bottom: 1.2rem;
+  }
+
+  .bio-content .bio-ideas { margin-top: 1.2rem; }
+
+  .bio-content .bio-ideas h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 1.05rem; color: var(--text-bright);
+    margin-bottom: 0.7rem; font-weight: 700;
+  }
+
+  .bio-content .bio-ideas p {
+    font-size: 1rem; line-height: 1.8; color: var(--text);
+    margin-bottom: 0.7rem; padding-left: 1rem;
+    border-left: 3px solid var(--panel-color, var(--border));
+  }
+
+  .bio-content .bio-works { margin-top: 1.5rem; }
+
+  .bio-content .bio-works h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 1.05rem; color: var(--text-bright);
+    margin-bottom: 0.5rem; font-weight: 700;
+  }
+
+  .bio-content .bio-works p {
+    font-size: 0.95rem; color: var(--text-muted);
+    font-style: italic; line-height: 1.7;
+  }
+
+  /* ===== FOOTER ===== */
+  .site-footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-top: 2px solid var(--border);
+    background: #fff;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .site-footer .credit {
+    font-size: 0.82rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
+  /* ===== INSTRUCCIONES ===== */
+  .help-section {
+    max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .help-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--text-bright);
+  }
+
+  .help-section code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    background: #f0eeea; padding: 0.15rem 0.4rem; border-radius: 3px; color: #be1e2d;
+  }
+
+  .help-section pre {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    background: #2c2c2c; color: #e8e6e0;
+    padding: 1rem 1.2rem; border-radius: 8px; overflow-x: auto; line-height: 1.6;
+    margin: 0.6rem 0 1rem;
+  }
+
+  .help-section p, .help-section li { font-size: 1rem; line-height: 1.7; margin-bottom: 0.5rem; }
+  .help-section ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+
+  /* ===== RESPONSIVO ===== */
+  @media (max-width: 700px) {
+    .economist-node { width: 100%; }
+    .bio-panel { width: 100vw; }
+    .bio-content { padding: 1rem 1.2rem 2rem; }
+    .legend { gap: 0.3rem 0.6rem; }
+    .legend-item { font-size: 0.78rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bio-panel { animation: none; }
+    .economist-node { transition: none; }
+  }
+
+  @media (prefers-contrast: more) {
+    :root { --border: #888; --border-strong: #555; --text-muted: #333; }
+    .economist-node { border-width: 3px; border-left-width: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#timeline">Saltar al contenido principal</a>
+
+<header>
+  <h1>Árbol del Pensamiento Económico</h1>
+  <p class="subtitle">De la Grecia antigua al siglo XXI. Toca cada pensador para ver su biografía y posturas principales.</p>
+  <div class="course-info">
+    <strong>Fundamentos de Economía</strong><br>
+    Pregrado en Ciencia Política<br>
+    Facultad de Derecho y Ciencias Políticas<br>
+    Universidad de Antioquia · 2026<br>
+    Profesor: Emilio Henao
+  </div>
+  <div class="search-bar">
+    <span class="search-icon" aria-hidden="true">🔍</span>
+    <input type="text" id="searchInput" placeholder="Buscar economista o escuela..." aria-label="Buscar economista por nombre o escuela">
+  </div>
+</header>
+
+<nav class="legend" id="legend" aria-label="Filtrar por escuela económica"></nav>
+
+<div class="search-results" id="searchResults">
+  <div class="search-results-header" id="searchResultsHeader"></div>
+  <div class="search-results-grid" id="searchResultsGrid"></div>
+</div>
+
+<main class="timeline" id="timeline"></main>
+
+<div class="overlay" id="overlay"></div>
+<aside class="bio-panel" id="bioPanel" role="dialog" aria-label="Biografía del economista">
+  <div class="bio-close"><button id="closePanel" aria-label="Cerrar panel">✕</button></div>
+  <div class="bio-content" id="bioContent"></div>
+</aside>
+
+
+<section class="quiz-section" id="quizSection">
+  <h2>¿A qué escuela pertenecés?</h2>
+  <p class="quiz-intro">Inspirado en las "recetas económicas" de Ha-Joon Chang: respondé estas preguntas y descubrí qué mezcla de tradiciones económicas se acerca más a tu forma de pensar.</p>
+
+  <div id="quizQuestions"></div>
+  <button class="quiz-btn" id="quizSubmit">Ver mi resultado</button>
+  <div class="quiz-result" id="quizResult">
+    <h3 id="quizResultTitle"></h3>
+    <div class="result-school" id="quizResultSchool"></div>
+    <div class="result-desc" id="quizResultDesc"></div>
+    <div class="result-recipe" id="quizResultRecipe"></div>
+    <button class="quiz-reset" id="quizReset">Volver a intentar</button>
+  </div>
+</section>
+
+
+
+<footer class="site-footer">
+  Fundamentos de Economía · Pregrado en Ciencia Política · Facultad de Derecho y Ciencias Políticas · Universidad de Antioquia · 2026
+  <div class="credit">Hecho por Emilio Henao con ayuda de Claude (IA)</div>
+</footer>
+
+<script>
+const SCHOOLS = {
+  griegos:          { label: 'Precursores griegos',
+    desc: 'Filósofos que sentaron las bases del pensamiento económico occidental: la gestión del hogar (oikonomía), la división del trabajo, la distinción entre valor de uso y valor de cambio, y la reflexión moral sobre la propiedad y la riqueza.',    color: '#5b4a1c', symbol: 'Ω', desc: 'Reflexiones sobre el valor, la propiedad y la gestión del hogar (oikonomía) en la Grecia clásica.' },
+  escolastica:      { label: 'Escolástica',            color: '#7b5e00', symbol: '✝', desc: 'Teólogos medievales y de la Escuela de Salamanca: precio justo, usura y teoría cuantitativa del dinero.' },
+  premodernos:      { label: 'Premodernos',
+    desc: 'Pensadores de los siglos XVII y XVIII que, desde la filosofía política y la observación del comercio atlántico, anticiparon temas centrales de la economía clásica: la propiedad como derecho natural, el dinero como velo, los efectos distributivos de la inflación y la figura del empresario.',            color: '#6d5c3a', symbol: '⚜', desc: 'Pensadores de los siglos XVII y XVIII que anticiparon la economía clásica: propiedad, dinero y comercio.' },
+  mercantilismo:    { label: 'Mercantilismo',
+    desc: 'Doctrina dominante entre los siglos XVI y XVIII que identificaba la riqueza nacional con la acumulación de metales preciosos y promovía el proteccionismo, los monopolios comerciales y la intervención estatal para lograr una balanza comercial favorable.',          color: '#8b4513', symbol: '⚓', desc: 'Acumulación de metales preciosos, balanza comercial favorable y proteccionismo estatal (s. XVI–XVIII).' },
+  fisiocracia:      { label: 'Fisiocracia',
+    desc: 'Primera escuela económica sistemática (Francia, mediados del siglo XVIII). Concibió la economía como un sistema de flujos circulares donde solo la agricultura genera riqueza neta, y abogó por el laissez faire como principio rector.',            color: '#1a7a42', symbol: '🌿', desc: 'La tierra como única fuente de riqueza, flujos circulares y laissez faire (Francia, s. XVIII).' },
+  clasica:          { label: 'Clásica',                color: '#2563eb', symbol: '▣', desc: 'División del trabajo, valor trabajo, ventaja comparativa y libre mercado (Smith, Ricardo, Mill).' },
+  marxismo:         { label: 'Marxismo',
+    desc: 'Crítica integral del capitalismo como modo de producción históricamente determinado. Analiza la explotación del trabajo asalariado, las contradicciones internas del sistema (tendencia decreciente de la tasa de ganancia) y la dinámica de acumulación e imperialismo.',               color: '#be1e2d', symbol: '⚙', desc: 'Crítica del capitalismo: plusvalía, lucha de clases, materialismo histórico y contradicciones del sistema.' },
+  marginalismo:     { label: 'Marginalismo',           color: '#7b2d8b', symbol: '△', desc: 'Revolución de 1871: el valor depende de la utilidad marginal, no del trabajo incorporado.' },
+  neoclasica:       { label: 'Neoclásica',
+    desc: 'Síntesis del marginalismo en un marco analítico unificado: equilibrio parcial (Marshall), equilibrio general (Walras-Pareto), economía del bienestar y externalidades. Dominó la enseñanza de la economía durante el primer tercio del siglo XX.',             color: '#0369a1', symbol: '≈', desc: 'Equilibrio parcial y general, eficiencia de Pareto, externalidades y economía del bienestar.' },
+  austriaca:        { label: 'Austriaca',              color: '#b45309', symbol: '◇', desc: 'Subjetivismo, orden espontáneo, crítica al socialismo y teoría del ciclo por expansión crediticia.' },
+  keynesiana:       { label: 'Keynesiana',             color: '#0f766e', symbol: '◉', desc: 'Demanda efectiva, desempleo involuntario, trampa de liquidez e intervención fiscal estabilizadora.' },
+  chicago:          { label: 'Escuela de Chicago',
+    desc: 'Monetarismo, expectativas racionales y extensión del análisis de mercado a la política, el crimen, la familia y la educación. Defiende la estabilidad de reglas monetarias y la eficiencia de los mercados libres.',     color: '#c2410c', symbol: '▲', desc: 'Monetarismo, expectativas racionales, capital humano y extensión del análisis económico a todas las esferas.' },
+  institucionalismo:{ label: 'Institucionalismo',
+    desc: 'Las reglas del juego (instituciones formales e informales) son el determinante fundamental del desempeño económico. Desde Veblen (hábitos y consumo conspicuo) hasta North (costos de transacción y path dependence).',      color: '#0e7490', symbol: '⬡', desc: 'Las reglas del juego (instituciones) como determinante fundamental del desempeño económico.' },
+  postkeynesiana:   { label: 'Post-keynesiana',        color: '#0d9488', symbol: '◈', desc: 'Competencia imperfecta, inestabilidad financiera endógena y crítica a la síntesis neoclásica.' },
+  desarrollo:       { label: 'Economía del desarrollo',
+    desc: 'El estudio de las trampas de pobreza, las economías duales, las capacidades humanas y las intervenciones basadas en evidencia para los países de ingreso bajo y medio.',color: '#7c3aed', symbol: '◐', desc: 'Economías duales, capacidades humanas, trampas de pobreza y evaluación de políticas con RCT.' },
+  conductual:       { label: 'Economía conductual',
+    desc: 'Integración de la psicología cognitiva en la teoría económica: sesgos sistemáticos, aversión a las pérdidas, contabilidad mental y el diseño de arquitecturas de decisión (nudges) para mejorar las políticas públicas.',    color: '#dc2626', symbol: '🧠', desc: 'Sesgos cognitivos, prospect theory, nudges y los límites de la racionalidad en las decisiones.' },
+  contemporanea:    { label: 'Contemporánea',          color: '#1d4ed8', symbol: '★', desc: 'Información asimétrica, desigualdad global, instituciones inclusivas y evidencia experimental.' },
+};
+
+const ERAS = [
+  {
+    label: 'Precursores griegos · s. V–IV a. C.',
+    economists: [
+      {
+        name: 'Jenofonte', dates: 'c. 431–354 a. C.', school: 'griegos', img: '',
+        bio: 'Historiador, soldado y discípulo de Sócrates ateniense. Es el autor del Oeconomicus, el primer tratado conocido dedicado a la administración doméstica y agrícola, del cual proviene la propia palabra "economía" (oikonomía: gestión del hogar). Participó como mercenario en la expedición de los Diez Mil en Persia, experiencia que narró en la Anábasis. Su obra económica combina observación práctica de la agricultura y el comercio con reflexión socrática sobre la virtud del buen administrador. También escribió Poroi (Sobre los ingresos), donde propuso medidas concretas para mejorar las finanzas de Atenas, como la explotación de las minas de plata del Laurión y la atracción de comerciantes extranjeros, anticipando el análisis de política económica.',
+        ideas: [
+          'La economía es el arte de administrar bien el hogar (oikos) y la hacienda agrícola; un buen administrador maximiza el valor de sus recursos mediante la organización y el liderazgo.',
+          'La división del trabajo aumenta la calidad de los productos: en las ciudades grandes, donde cada artesano se especializa en una tarea, los bienes son superiores a los de las ciudades pequeñas.',
+          'La riqueza de un Estado depende de la productividad de sus recursos naturales (las minas de plata del Laurión, la tierra agrícola) y de políticas que atraigan comercio y residentes extranjeros.'
+        ],
+        works: 'Oeconomicus (c. 362 a. C.), Poroi (Sobre los ingresos, c. 355 a. C.), Ciropedia.'
+      },
+      {
+        name: 'Platón', dates: 'c. 427–347 a. C.', school: 'griegos', img: '',
+        bio: 'Filósofo ateniense, fundador de la Academia. Aunque su interés primario era la justicia y el orden político, sus diálogos contienen reflexiones influyentes sobre la propiedad, la división del trabajo y la moneda dentro de la polis ideal.',
+        ideas: [
+          'La ciudad surge porque ningún individuo es autosuficiente: la necesidad de cooperación y especialización da origen a la división del trabajo, que es el fundamento de la vida social.',
+          'En la república ideal, los guardianes no deben poseer propiedad privada ni riqueza personal, porque la acumulación corrompe el alma y genera conflicto entre el interés particular y el bien común.',
+          'Distinguió entre una economía que satisface necesidades genuinas y una "ciudad afiebrada" donde el apetito desmedido de lujo conduce a la expansión militar y la decadencia moral.'
+        ],
+        works: 'República (c. 375 a. C.), Leyes (c. 348 a. C.).'
+      },
+      {
+        name: 'Aristóteles', dates: '384–322 a. C.', school: 'griegos', img: '',
+        bio: 'Filósofo, discípulo de Platón y tutor de Alejandro Magno. Su análisis del intercambio, el valor y la crematística constituye el punto de partida más citado de la reflexión económica occidental.',
+        ideas: [
+          'Distinguió entre oikonomía (el arte natural de adquirir lo necesario para vivir bien, que tiene un límite) y crematística (el arte de acumular dinero sin fin, que es antinatural y moralmente peligroso).',
+          'El valor de un bien tiene dos dimensiones: el valor de uso (la utilidad propia del objeto) y el valor de cambio (la proporción en que se intercambia por otro bien). Esta distinción perduró hasta el siglo XIX.',
+          'Condenó la usura (tokos, "crías del dinero") como la forma más antinatural de adquisición: el dinero es un medio de intercambio estéril, incapaz de reproducirse por sí mismo.'
+        ],
+        works: 'Política (c. 350 a. C.), Ética a Nicómaco (c. 340 a. C.).'
+      }
+    ]
+  },
+  {
+    label: 'Escolástica y Escuela de Salamanca · s. XIII–XVI',
+    desc: 'Teólogos medievales y renacentistas que analizaron el precio justo, la usura y los efectos monetarios de la plata americana. La Escuela de Salamanca anticipó conceptos como la teoría cuantitativa del dinero y la oferta y demanda.',
+    economists: [
+      {
+        name: 'Tomás de Aquino', dates: '1225–1274', school: 'escolastica', img: '',
+        bio: 'Teólogo y filósofo dominico, integró el pensamiento aristotélico con la doctrina cristiana. Su tratamiento de la economía aparece dentro de la Summa Theologiae como parte de la reflexión moral sobre la justicia.',
+        ideas: [
+          'Defendió la doctrina del precio justo: el valor de un bien debe reflejar su utilidad social y el costo de producirlo, y las transacciones deben ser recíprocamente equitativas.',
+          'Condenó la usura como contraria a la ley natural, puesto que el dinero es fungible y no genera frutos por sí mismo.',
+          'La propiedad privada es lícita como administración, pero los bienes tienen un destino universal: el excedente debe destinarse al bien común.'
+        ],
+        works: 'Summa Theologiae (1265–1274), Comentarios a la Política y a la Ética de Aristóteles.'
+      },
+      {
+        name: 'Francisco de Vitoria', dates: '1483–1546', school: 'escolastica', img: '',
+        bio: 'Teólogo dominico, fundador intelectual de la Escuela de Salamanca. Además de su contribución al derecho de gentes, reflexionó sobre la moralidad del comercio, la propiedad y la conquista.',
+        ideas: [
+          'Los pueblos indígenas tienen derecho natural a la propiedad y al autogobierno; la conquista por codicia es injusta.',
+          'El comercio internacional es legítimo si respeta la justicia conmutativa y el beneficio mutuo.',
+          'Distinguió entre el valor de uso y las condiciones de escasez que modifican el precio, anticipando nociones de oferta y demanda.'
+        ],
+        works: 'Relectiones theologicae (publicadas póstumamente, 1557).'
+      },
+      {
+        name: 'Martín de Azpilcueta', dates: '1491–1586', school: 'escolastica', img: '',
+        bio: 'Canonista navarro, miembro de la Escuela de Salamanca. Fue uno de los primeros en formular una teoría cuantitativa del dinero al observar los efectos de la afluencia de metales preciosos americanos sobre los precios peninsulares.',
+        ideas: [
+          'Formuló tempranamente la relación entre cantidad de dinero en circulación y nivel de precios: a mayor abundancia de metales, mayor carestía.',
+          'Justificó ciertos cobros de interés vinculados al lucro cesante y al riesgo, matizando la condena absoluta de la usura.',
+          'Defendió la libertad de comercio como mecanismo de ajuste de los precios entre regiones.'
+        ],
+        works: 'Comentario resolutorio de cambios (1556).'
+      },
+      {
+        name: 'Tomás de Mercado', dates: 'c. 1523–1575', school: 'escolastica', img: '',
+        bio: 'Fraile dominico sevillano, formado en México y Salamanca. Observador directo del comercio atlántico, analizó los mecanismos de cambio, los precios y las prácticas mercantiles del siglo XVI con una combinación de rigor moral y conocimiento empírico del mundo comercial.',
+        ideas: [
+          'El precio justo de un bien lo fija la estimación común del mercado, influida por la abundancia, la escasez y la necesidad; el vendedor que cobra por encima de esa estimación comete injusticia.',
+          'Describió y condenó prácticas cambiarias especulativas entre Sevilla y las ferias de Medina del Campo, distinguiendo el cambio lícito del abusivo.',
+          'La inflación provocada por la plata americana encarece los bienes y perjudica a los más pobres; los mercaderes que manipulan el tipo de cambio agravan el problema.'
+        ],
+        works: 'Suma de tratos y contratos (1569).'
+      },
+      {
+        name: 'Luis de Molina', dates: '1535–1600', school: 'escolastica', img: '',
+        bio: 'Teólogo y jurista jesuita, uno de los últimos grandes escolásticos de Salamanca. Sistematizó la teoría del precio, la justicia conmutativa y los contratos mercantiles con una sofisticación que anticipa conceptos posteriores de oferta, demanda y riesgo.',
+        ideas: [
+          'El precio justo se establece por la estimación común de compradores y vendedores en un mercado libre, considerando la abundancia o escasez del bien, la utilidad percibida y las circunstancias del lugar y momento.',
+          'Los títulos que justifican el cobro de interés (lucro cesante, daño emergente, riesgo de pérdida del capital) son legítimos y distinguibles de la usura pura.',
+          'La propiedad privada es un derecho natural instrumental: existe porque facilita el uso eficiente de los recursos, pero no anula la obligación de socorrer al necesitado en caso extremo.'
+        ],
+        works: 'De iustitia et iure (Sobre la justicia y el derecho, 1593–1609, 6 volúmenes).'
+      }
+    ]
+  },
+  {
+    label: 'Premodernos · s. XVII–XVIII',
+    economists: [
+      {
+        name: 'John Locke', dates: '1632–1704', school: 'premodernos', img: '',
+        bio: 'Filósofo inglés, padre del liberalismo político. Su teoría de la propiedad fundamentada en el trabajo y su análisis monetario influyeron decisivamente en la economía clásica y en la filosofía política moderna.',
+        ideas: [
+          'La propiedad nace del trabajo: cuando un individuo mezcla su trabajo con un recurso natural, adquiere un derecho legítimo sobre el producto, siempre que deje "suficiente y de igual calidad" para los demás.',
+          'El dinero, al ser un bien imperecedero aceptado por convención, permite la acumulación ilimitada sin violar el derecho natural, lo que legitima la desigualdad de riqueza dentro de ciertos límites.',
+          'La reducción artificial del tipo de interés por ley es ineficaz y contraproducente: el interés es el precio del uso del dinero y debe fijarse por la oferta y demanda de fondos prestables.'
+        ],
+        works: 'Two Treatises of Government (1689), Some Considerations of the Consequences of the Lowering of Interest (1691).'
+      },
+      {
+        name: 'David Hume', dates: '1711–1776', school: 'premodernos', img: '',
+        bio: 'Filósofo, historiador y ensayista escocés. Amigo e interlocutor de Adam Smith, sus ensayos económicos anticiparon tesis centrales de la economía clásica sobre el dinero, el comercio y la balanza de pagos.',
+        ideas: [
+          'El mecanismo de flujo de especie (price-specie flow): un superávit comercial atrae metales preciosos que elevan los precios internos, encarecen las exportaciones y restablecen el equilibrio automáticamente; los mercantilistas se equivocan al creer que se puede acumular oro indefinidamente.',
+          'El dinero es un velo: a largo plazo, un aumento de la cantidad de dinero solo eleva los precios sin alterar la producción real; la riqueza real de una nación reside en su industria y sus bienes.',
+          'El comercio internacional es mutuamente beneficioso: la prosperidad de un país vecino no amenaza, porque los países ricos son los mejores mercados para los productos propios.'
+        ],
+        works: 'Political Discourses (1752, incluye "Of Money", "Of the Balance of Trade", "Of Interest").'
+      },
+      {
+        name: 'Richard Cantillon', dates: 'c. 1680–1734', school: 'premodernos', img: '',
+        bio: 'Banquero y economista irlandés-francés. Su Essai, redactado hacia 1730 y publicado póstumamente, es considerado por muchos historiadores el primer tratado sistemático de economía política, anterior a la Riqueza de las Naciones por más de cuarenta años.',
+        ideas: [
+          'El "efecto Cantillon": un aumento de la oferta monetaria no eleva todos los precios de manera uniforme ni simultánea; los primeros receptores del nuevo dinero se benefician gastándolo a precios aún bajos, mientras que quienes lo reciben al final soportan los precios ya inflados.',
+          'El empresario es el agente central de la economía: opera bajo incertidumbre, compra a precios ciertos y vende a precios inciertos, y su ganancia o pérdida depende de esa diferencia.',
+          'La tierra es la fuente última de toda riqueza material; el trabajo es el medio que la transforma. Los precios de los bienes reflejan en última instancia la cantidad de tierra y trabajo incorporados en su producción.'
+        ],
+        works: 'Essai sur la nature du commerce en général (escrito c. 1730, publicado 1755).'
+      }
+    ]
+  },
+  {
+    label: 'Mercantilismo · s. XVI–XVIII',
+    economists: [
+      {
+        name: 'Jean-Baptiste Colbert', dates: '1619–1683', school: 'mercantilismo', img: '',
+        bio: 'Ministro de finanzas de Luis XIV. Arquitecto del colbertismo, variante francesa del mercantilismo que combinaba proteccionismo, manufacturas reales y regulación minuciosa del comercio.',
+        ideas: [
+          'La riqueza nacional se mide por la acumulación de metales preciosos; el comercio exterior es un juego de suma cero.',
+          'El Estado debe promover manufacturas nacionales, otorgar monopolios y subsidios, y elevar aranceles para reducir importaciones.',
+          'Las compañías comerciales privilegiadas son el instrumento para capturar mercados coloniales.'
+        ],
+        works: 'No dejó tratados; su legado son las ordenanzas reales y la política industrial que lleva su nombre.'
+      },
+      {
+        name: 'Thomas Mun', dates: '1571–1641', school: 'mercantilismo', img: '',
+        bio: 'Comerciante inglés y director de la Compañía de las Indias Orientales. Su obra es el texto canónico del mercantilismo inglés.',
+        ideas: [
+          'La riqueza de Inglaterra depende de exportar más de lo que importa; el saldo positivo atrae oro y plata.',
+          'Es admisible reexportar bienes importados si el valor agregado genera ganancia neta para la nación.',
+          'Las restricciones excesivas al comercio pueden ser contraproducentes; lo que importa es el balance global.'
+        ],
+        works: "England's Treasure by Foreign Trade (publicado póstumamente, 1664)."
+      }
+    ]
+  },
+  {
+    label: 'Fisiocracia · mediados del s. XVIII',
+    economists: [
+      {
+        name: 'François Quesnay', dates: '1694–1774', school: 'fisiocracia', img: '',
+        bio: 'Médico de la corte de Luis XV y fundador de la fisiocracia, la primera escuela de pensamiento económico sistemática.',
+        ideas: [
+          'Solo la agricultura genera un producto neto (excedente real); la manufactura y el comercio son actividades estériles que transforman sin crear.',
+          'El Tableau Économique (1758) modela la circulación de riqueza entre tres clases como un sistema de flujos interdependientes.',
+          'Laissez faire, laissez passer: la intervención estatal distorsiona el orden natural de la economía.'
+        ],
+        works: 'Tableau Économique (1758), artículos "Fermiers" y "Grains" en la Encyclopédie.'
+      },
+      {
+        name: 'Anne Robert Jacques Turgot', dates: '1727–1781', school: 'fisiocracia', img: '',
+        bio: 'Intendente y brevemente Controlador General de Finanzas de Luis XVI. Economista y reformador que intentó aplicar principios fisiocráticos al Estado francés.',
+        ideas: [
+          'El capital es ahorro acumulado que se invierte en actividades productivas; su rendimiento depende de la competencia entre usos alternativos.',
+          'Los gremios y las regulaciones corporativas frenan la producción; la libertad de trabajo y comercio fomenta la prosperidad.',
+          'La ley de rendimientos decrecientes se aplica a la tierra: cada unidad adicional de trabajo rinde menos producto.'
+        ],
+        works: 'Réflexions sur la formation et la distribution des richesses (1766).'
+      }
+    ]
+  },
+  {
+    label: 'Economía clásica · 1776–1870',
+    desc: 'La tradición fundacional de la economía como disciplina (1776 a 1870). Sus temas centrales fueron la división del trabajo, la teoría del valor trabajo, la distribución entre clases, el libre comercio y los límites del crecimiento.',
+    economists: [
+      {
+        name: 'Adam Smith', dates: '1723–1790', school: 'clasica', img: '',
+        bio: 'Filósofo moral escocés, considerado el padre de la economía política. Su obra sintetizó ideas previas en un sistema coherente que vincula la división del trabajo, el interés propio y el orden espontáneo del mercado.',
+        ideas: [
+          'La división del trabajo es la fuente principal de la productividad y la riqueza de las naciones.',
+          'La "mano invisible" describe cómo la persecución del interés individual puede conducir, sin intención, a resultados socialmente beneficiosos.',
+          'La teoría del valor trabajo: el valor de un bien depende del trabajo necesario para producirlo, aunque en sociedades avanzadas los precios reflejan también renta y beneficio.'
+        ],
+        works: 'The Theory of Moral Sentiments (1759), An Inquiry into the Nature and Causes of the Wealth of Nations (1776).'
+      },
+      {
+        name: 'David Ricardo', dates: '1772–1823', school: 'clasica', img: '',
+        bio: 'Corredor de bolsa y parlamentario británico. Formalizó la economía clásica con modelos rigurosos de distribución, comercio y renta.',
+        ideas: [
+          'La ventaja comparativa: cada país se beneficia especializándose en lo que produce con menor costo de oportunidad relativo.',
+          'La renta de la tierra surge de las diferencias de fertilidad entre parcelas; la tierra marginal no paga renta.',
+          'Tendencia decreciente de la tasa de ganancia: a medida que se cultivan tierras peores, la renta sube y el beneficio del capital cae.'
+        ],
+        works: 'On the Principles of Political Economy and Taxation (1817).'
+      },
+      {
+        name: 'Thomas Malthus', dates: '1766–1834', school: 'clasica', img: '',
+        bio: 'Clérigo y profesor de economía política. Su ensayo sobre la población generó uno de los debates más duraderos de las ciencias sociales.',
+        ideas: [
+          'La población crece geométricamente mientras los alimentos crecen aritméticamente; la presión demográfica tiende a mantener los salarios en subsistencia.',
+          'Los "frenos" al crecimiento poblacional son preventivos (celibato, matrimonio tardío) o positivos (hambruna, enfermedad, guerra).',
+          'Las crisis de sobreproducción son posibles porque la demanda efectiva puede resultar insuficiente.'
+        ],
+        works: 'An Essay on the Principle of Population (1798), Principles of Political Economy (1820).'
+      },
+      {
+        name: 'John Stuart Mill', dates: '1806–1873', school: 'clasica', img: '',
+        bio: 'Filósofo, economista y parlamentario británico. Sistematizó la economía clásica en su forma más madura.',
+        ideas: [
+          'Las leyes de producción son como leyes naturales, pero la distribución del producto es una cuestión de arreglos institucionales modificables.',
+          'El "estado estacionario" de crecimiento cero puede ser una etapa de mejora cualitativa de la vida.',
+          'La libertad individual es un valor intrínseco; la interferencia del Estado solo se justifica para prevenir daños a terceros.'
+        ],
+        works: 'Principles of Political Economy (1848), On Liberty (1859), The Subjection of Women (1869).'
+      },
+      {
+        name: 'Jean-Baptiste Say', dates: '1767–1832', school: 'clasica', img: '',
+        bio: 'Empresario y economista francés, divulgador de las ideas de Smith en el continente.',
+        ideas: [
+          'La ley de Say: la oferta crea su propia demanda; las crisis generales de sobreproducción son imposibles.',
+          'El empresario es un agente distinto del capitalista; su función es combinar factores productivos y asumir riesgo.',
+          'El valor depende de la utilidad y la escasez, una intuición que prefigura el marginalismo.'
+        ],
+        works: "Traité d'économie politique (1803)."
+      }
+    ]
+  },
+  {
+    label: 'Marxismo · desde 1867',
+    economists: [
+      {
+        name: 'Karl Marx', dates: '1818–1883', school: 'marxismo', img: '',
+        bio: 'Filósofo, economista y revolucionario alemán. Desarrolló una crítica integral de la economía política clásica y del capitalismo como modo de producción históricamente determinado.',
+        ideas: [
+          'La teoría del valor trabajo y la plusvalía: el capitalista extrae valor del trabajo no remunerado del obrero, que es la fuente de la ganancia.',
+          'La tendencia decreciente de la tasa de ganancia: la competencia obliga a sustituir trabajo vivo por maquinaria, pero solo el trabajo vivo genera plusvalía.',
+          'El materialismo histórico: las relaciones de producción determinan en última instancia las formas políticas, jurídicas e ideológicas.'
+        ],
+        works: 'El Capital (vol. I, 1867; vol. II y III póstumos), Manifiesto del Partido Comunista (1848, con Engels), Grundrisse (1857–58).'
+      },
+      {
+        name: 'Rosa Luxemburgo', dates: '1871–1919', school: 'marxismo', img: '',
+        bio: 'Teórica marxista y revolucionaria polaco-alemana. Analizó los límites de la acumulación capitalista y la necesidad del imperialismo como válvula de expansión.',
+        ideas: [
+          'El capitalismo necesita permanentemente mercados precapitalistas externos para realizar la plusvalía; su agotamiento marca el límite del sistema.',
+          'El imperialismo es una fase necesaria de la acumulación, con la militarización y la violencia colonial como mecanismos de incorporación.',
+          'La democracia socialista requiere la acción espontánea de las masas, no la dirección burocrática del partido.'
+        ],
+        works: 'La acumulación del capital (1913), Reforma o revolución (1899).'
+      }
+    ]
+  },
+  {
+    label: 'Revolución marginalista · 1871–1890',
+    desc: 'Transformación simultánea de la teoría del valor en la década de 1870: tres autores independientes (Jevons, Menger, Walras) reemplazaron la teoría del valor trabajo por la utilidad marginal, abriendo paso al análisis matemático de la economía.',
+    economists: [
+      {
+        name: 'William Stanley Jevons', dates: '1835–1882', school: 'marginalismo', img: '',
+        bio: 'Lógico y economista británico. Formuló de manera independiente la teoría de la utilidad marginal.',
+        ideas: [
+          'El valor de un bien depende de su utilidad marginal, que decrece con la cantidad.',
+          'El intercambio se explica como la igualación de utilidades marginales ponderadas por los precios.',
+          'La economía debe fundarse en el cálculo matemático del placer y el dolor.'
+        ],
+        works: 'The Theory of Political Economy (1871), The Coal Question (1865).'
+      },
+      {
+        name: 'Carl Menger', dates: '1840–1921', school: 'marginalismo', img: '',
+        bio: 'Economista austríaco, fundador de la Escuela Austriaca. Su obra inauguró simultáneamente el marginalismo y la tradición subjetivista.',
+        ideas: [
+          'El valor es subjetivo y se origina en la importancia que el individuo asigna a la satisfacción de sus necesidades mediante bienes escasos.',
+          'Los bienes se organizan en órdenes según su cercanía al consumo final.',
+          'La economía debe emplear un método analítico-causal, rechazando el historicismo (Methodenstreit).'
+        ],
+        works: 'Grundsätze der Volkswirthschaftslehre (1871).'
+      },
+      {
+        name: 'Léon Walras', dates: '1834–1910', school: 'marginalismo', img: '',
+        bio: 'Economista francés radicado en Lausana. Construyó el primer modelo de equilibrio general.',
+        ideas: [
+          'El equilibrio general: los precios de todos los bienes y factores se determinan simultáneamente a través de ecuaciones de oferta y demanda interdependientes.',
+          'El subastador walrasiano tantea precios hasta que todos los mercados se vacían (tâtonnement).',
+          'El valor se explica por la escasez relativa combinada con la utilidad marginal.'
+        ],
+        works: "Éléments d'économie politique pure (1874)."
+      }
+    ]
+  },
+  {
+    label: 'Neoclásica · 1890–1930',
+    economists: [
+      {
+        name: 'Alfred Marshall', dates: '1842–1924', school: 'neoclasica', img: '',
+        bio: 'Economista británico, arquitecto de la síntesis neoclásica. Combinó la tradición ricardiana con el marginalismo en un marco de equilibrio parcial.',
+        ideas: [
+          'El precio se determina como unas tijeras: hoja de oferta (costos) y hoja de demanda (utilidad marginal), con la cláusula ceteris paribus.',
+          'La elasticidad precio de la demanda mide la sensibilidad de la cantidad demandada ante cambios en el precio.',
+          'El excedente del consumidor mide el bienestar neto que obtienen los compradores.'
+        ],
+        works: 'Principles of Economics (1890).'
+      },
+      {
+        name: 'Vilfredo Pareto', dates: '1848–1923', school: 'neoclasica', img: '',
+        bio: 'Ingeniero, sociólogo y economista italiano, sucesor de Walras en Lausana.',
+        ideas: [
+          'El óptimo de Pareto: una asignación es eficiente si es imposible mejorar a alguien sin empeorar a otro.',
+          'La teoría del consumidor puede formularse con curvas de indiferencia ordinales, sin medir la utilidad cardinalmente.',
+          'La distribución de la renta sigue una regularidad empírica: una fracción reducida concentra la mayor parte de la riqueza (ley de Pareto).'
+        ],
+        works: "Manuel d'économie politique (1906), Trattato di sociologia generale (1916)."
+      },
+      {
+        name: 'Arthur C. Pigou', dates: '1877–1959', school: 'neoclasica', img: '',
+        bio: 'Economista británico, sucesor de Marshall en Cambridge. Fundador de la economía del bienestar.',
+        ideas: [
+          'Las externalidades (costos o beneficios impuestos a terceros que no se reflejan en el precio) justifican la intervención del Estado.',
+          'El impuesto pigouviano corrige externalidades negativas internalizando el costo social.',
+          'El bienestar puede aumentarse redistribuyendo renta, dado que la utilidad marginal del ingreso es decreciente.'
+        ],
+        works: 'The Economics of Welfare (1920).'
+      }
+    ]
+  },
+  {
+    label: 'Escuela Austriaca · 1920–presente',
+    desc: 'Tradición subjetivista que enfatiza el conocimiento disperso, el orden espontáneo del mercado, la imposibilidad del cálculo económico socialista y los ciclos económicos como consecuencia de la expansión crediticia artificial.',
+    economists: [
+      {
+        name: 'Ludwig von Mises', dates: '1881–1973', school: 'austriaca', img: '',
+        bio: 'Economista austríaco, defensor radical del liberalismo económico y de la praxeología.',
+        ideas: [
+          'Sin precios de mercado para los bienes de capital, una economía socialista carece del mecanismo para asignar recursos racionalmente (problema del cálculo económico).',
+          'La praxeología estudia la acción humana de forma deductiva a priori.',
+          'Los ciclos económicos se originan en la expansión crediticia y la manipulación del tipo de interés.'
+        ],
+        works: 'La acción humana (1949), Socialismo (1922), Teoría del dinero y del crédito (1912).'
+      },
+      {
+        name: 'Friedrich Hayek', dates: '1899–1992', school: 'austriaca', img: '',
+        bio: 'Economista y filósofo político austríaco-británico, premio Nobel en 1974.',
+        ideas: [
+          'El conocimiento relevante está disperso entre millones de individuos; los precios funcionan como señales que sintetizan esa información.',
+          'Los ciclos se originan en la expansión artificial del crédito, que distorsiona la estructura temporal de la producción.',
+          'El orden espontáneo (kosmos) es superior al orden diseñado (taxis).'
+        ],
+        works: 'The Road to Serfdom (1944), The Use of Knowledge in Society (1945), Law, Legislation and Liberty (1973–79).'
+      }
+    ]
+  },
+  {
+    label: 'Revolución keynesiana · 1936–1970',
+    desc: 'Ruptura con la economía clásica: Keynes demostró que las economías pueden estancarse en equilibrios con desempleo masivo. La demanda efectiva, la incertidumbre radical y la política fiscal activa pasaron al centro de la macroeconomía.',
+    economists: [
+      {
+        name: 'John Maynard Keynes', dates: '1883–1946', school: 'keynesiana', img: '',
+        bio: 'Economista británico de Cambridge, el más influyente del siglo XX. Demostró que las economías capitalistas pueden estabilizarse en equilibrios con desempleo involuntario.',
+        ideas: [
+          'La demanda efectiva determina el nivel de producción y empleo; la ley de Say es falsa.',
+          'La "trampa de la liquidez": cuando el tipo de interés es muy bajo, la política monetaria pierde eficacia.',
+          'La incertidumbre radical y los "animal spirits" explican la volatilidad de la inversión y los ciclos económicos.'
+        ],
+        works: 'The General Theory of Employment, Interest and Money (1936), A Treatise on Money (1930), Las consecuencias económicas de la paz (1919).'
+      },
+      {
+        name: 'John Hicks', dates: '1904–1989', school: 'keynesiana', img: '',
+        bio: 'Economista británico, premio Nobel en 1972. Formalizó la teoría keynesiana en el modelo IS-LM.',
+        ideas: [
+          'El modelo IS-LM integra el mercado de bienes y el mercado monetario para determinar simultáneamente renta y tipo de interés.',
+          'La elasticidad de sustitución mide la facilidad con que los factores productivos pueden reemplazarse mutuamente.',
+          'En su obra tardía cuestionó su propia formalización: el IS-LM simplificaba excesivamente las ideas de Keynes.'
+        ],
+        works: 'Mr. Keynes and the Classics (1937), Value and Capital (1939).'
+      },
+      {
+        name: 'Paul Samuelson', dates: '1915–2009', school: 'keynesiana', img: '',
+        bio: 'Economista estadounidense, premio Nobel en 1970. Artífice de la "síntesis neoclásica" y autor del manual de economía más influyente del siglo XX.',
+        ideas: [
+          'La síntesis neoclásica: la microeconomía neoclásica y la macroeconomía keynesiana son complementarias.',
+          'La preferencia revelada permite inferir las preferencias del consumidor a partir de sus elecciones observadas.',
+          'El comercio libre tiende a igualar los precios relativos de los factores entre países (Heckscher-Ohlin-Samuelson).'
+        ],
+        works: 'Foundations of Economic Analysis (1947), Economics: An Introductory Analysis (1948, 19 ediciones).'
+      }
+    ]
+  },
+  {
+    label: 'Escuela de Chicago · 1950–presente',
+    economists: [
+      {
+        name: 'Milton Friedman', dates: '1912–2006', school: 'chicago', img: '',
+        bio: 'Economista estadounidense, premio Nobel en 1976. Profesor en la Universidad de Chicago durante tres décadas, fue el líder intelectual del monetarismo y el adversario más influyente del keynesianismo en la segunda mitad del siglo XX. Además de sus contribuciones académicas (renta permanente, tasa natural de desempleo, historia monetaria), fue un divulgador extraordinario a través de su columna en Newsweek y la serie de televisión Free to Choose (1980), que lo convirtieron en el economista más reconocido públicamente de su generación.',
+        ideas: [
+          'La inflación es siempre y en todas partes un fenómeno monetario.',
+          'La hipótesis de la renta permanente: el consumo depende del ingreso esperado a lo largo de la vida.',
+          'La tasa natural de desempleo: a largo plazo la curva de Phillips es vertical.'
+        ],
+        works: 'A Monetary History of the United States (1963, con Schwartz), Capitalism and Freedom (1962).'
+      },
+      {
+        name: 'Gary Becker', dates: '1930–2014', school: 'chicago', img: '',
+        bio: 'Economista estadounidense, premio Nobel en 1992. Profesor en la Universidad de Chicago, fue el más audaz de los "imperialistas económicos": extendió el análisis de maximización racional a dominios tradicionalmente reservados a la sociología, la criminología y la demografía, incluyendo la discriminación racial, las decisiones familiares (matrimonio, divorcio, fecundidad), el crimen, la adicción y la inversión en capital humano. Su enfoque provocó tanto admiración como controversia.',
+        ideas: [
+          'El capital humano: la educación y la formación son inversiones que aumentan productividad e ingresos futuros.',
+          'Los delincuentes son agentes racionales que responden a incentivos; la pena óptima depende de la probabilidad de captura.',
+          'Las decisiones familiares pueden modelarse como elecciones de maximización de utilidad.'
+        ],
+        works: 'Human Capital (1964), The Economics of Discrimination (1957), A Treatise on the Family (1981).'
+      },
+      {
+        name: 'Robert Lucas', dates: '1937–2023', school: 'chicago', img: '',
+        bio: 'Economista estadounidense, premio Nobel en 1995. Profesor en la Universidad de Chicago, lideró la revolución de las expectativas racionales en la década de 1970, que transformó la macroeconomía al argumentar que los agentes económicos no cometen errores sistemáticos al predecir el futuro. Su "crítica de Lucas" invalidó la forma en que se usaban los modelos econométricos para evaluar políticas, obligando a reconstruir la macroeconomía sobre fundamentos microeconómicos explícitos.',
+        ideas: [
+          'Las expectativas racionales: los agentes forman sus expectativas usando eficientemente toda la información disponible.',
+          'La crítica de Lucas: los modelos econométricos históricos no sirven para evaluar cambios de política.',
+          'Los ciclos pueden explicarse por shocks monetarios inesperados confundidos con cambios en precios relativos.'
+        ],
+        works: 'Expectations and the Neutrality of Money (1972), Econometric Policy Evaluation: A Critique (1976).'
+      }
+    ]
+  },
+  {
+    label: 'Institucionalismo · 1899–presente',
+    economists: [
+      {
+        name: 'Thorstein Veblen', dates: '1857–1929', school: 'institucionalismo', img: '',
+        bio: 'Economista y sociólogo estadounidense de origen noruego, fundador del institucionalismo económico. Crítico mordaz de la clase ociosa y de la teoría neoclásica, vivió una vida académica turbulenta (expulsado de varias universidades por escándalos personales). Analizó la economía como un sistema evolutivo de hábitos, instintos e instituciones, anticipando la economía evolutiva y la sociología del consumo del siglo XX.',
+        ideas: [
+          'El consumo conspicuo: las clases altas consumen bienes lujosos para exhibir estatus social.',
+          'La dicotomía entre instinto de trabajo eficaz y hábitos pecuniarios depredadores.',
+          'La economía debe ser una ciencia evolutiva que estudie instituciones, hábitos y tecnología.'
+        ],
+        works: 'The Theory of the Leisure Class (1899), The Theory of Business Enterprise (1904).'
+      },
+      {
+        name: 'Douglass North', dates: '1920–2015', school: 'institucionalismo', img: '',
+        bio: 'Historiador económico estadounidense, premio Nobel en 1993 (compartido con Robert Fogel). Profesor en la Universidad de Washington en San Luis, transformó la historia económica al mostrar que las instituciones (reglas formales e informales, mecanismos de cumplimiento, organizaciones) son el factor decisivo del desempeño económico a largo plazo. Su marco analítico influyó profundamente en la ciencia política, el derecho y la economía del desarrollo.',
+        ideas: [
+          'Las instituciones reducen la incertidumbre y los costos de transacción; son el determinante fundamental del crecimiento.',
+          'El cambio institucional es path-dependent: las trayectorias históricas generan bloqueos.',
+          'La diferencia de desarrollo entre países se explica más por instituciones que por dotaciones de recursos.'
+        ],
+        works: 'Institutions, Institutional Change and Economic Performance (1990).'
+      }
+    ]
+  },
+  {
+    label: 'Post-keynesianos · 1950–presente',
+    desc: 'Recuperación de las ideas keynesianas más radicales: incertidumbre fundamental, competencia imperfecta como norma, inestabilidad financiera endógena y la distribución del ingreso como variable clave del crecimiento.',
+    economists: [
+      {
+        name: 'Joan Robinson', dates: '1903–1983', school: 'postkeynesiana', img: '',
+        bio: 'Economista británica de Cambridge, una de las figuras más destacadas de la economía del siglo XX. Fue protagonista de la controversia de los dos Cambridge sobre la teoría del capital, desarrolló la teoría de la competencia imperfecta independientemente de Chamberlin, y fue una de las voces más críticas de la síntesis neoclásica. Ampliamente reconocida como candidata al Nobel que nunca recibió, posiblemente por sus simpatías políticas hacia China y Corea del Norte.',
+        ideas: [
+          'La competencia imperfecta es la norma: las empresas fijan precios por encima del costo marginal.',
+          'La función de producción agregada y la medición del "capital" como factor homogéneo son incoherentes lógicamente.',
+          'El crecimiento depende de la distribución del ingreso entre salarios y beneficios.'
+        ],
+        works: 'The Economics of Imperfect Competition (1933), The Accumulation of Capital (1956).'
+      },
+      {
+        name: 'Hyman Minsky', dates: '1919–1996', school: 'postkeynesiana', img: '',
+        bio: 'Economista estadounidense, profesor en la Universidad de Washington en San Luis. Fue largamente ignorado por la corriente principal durante su vida, pero la crisis financiera de 2008 reivindicó espectacularmente su hipótesis de la inestabilidad financiera, hasta el punto de que los medios acuñaron la expresión "momento Minsky" para describir el colapso. Su trabajo recuperó las ideas keynesianas más radicales sobre la fragilidad inherente de las economías capitalistas con mercados financieros sofisticados.',
+        ideas: [
+          'La hipótesis de la inestabilidad financiera: la estabilidad engendra comportamientos especulativos crecientes.',
+          'Tres posturas financieras: cobertura, especulativa y Ponzi.',
+          'La estructura de deuda y los mercados financieros son fuentes autónomas de inestabilidad cíclica.'
+        ],
+        works: 'Stabilizing an Unstable Economy (1986), John Maynard Keynes (1975).'
+      }
+    ]
+  },
+  {
+    label: 'Economía del desarrollo · 1940–presente',
+    economists: [
+      {
+        name: 'Arthur Lewis', dates: '1915–1991', school: 'desarrollo', img: '',
+        bio: 'Economista santaluciano-británico, premio Nobel en 1979 (el primer académico negro en recibir un Nobel fuera de la categoría de Paz). Profesor en Manchester y Princeton, su modelo de economía dual, publicado en un artículo de 1954, es uno de los más influyentes en la historia de la economía del desarrollo y sigue siendo referencia obligada para entender los procesos de industrialización y urbanización en los países de ingreso bajo.',
+        ideas: [
+          'La economía dual: sector tradicional con mano de obra ilimitada a salario de subsistencia, y sector moderno que la absorbe.',
+          'El crecimiento se produce al transferir mano de obra del sector tradicional al moderno.',
+          'Cuando se agota el excedente de trabajo rural, los salarios suben (punto de inflexión de Lewis).'
+        ],
+        works: 'Economic Development with Unlimited Supplies of Labour (1954).'
+      },
+      {
+        name: 'Amartya Sen', dates: '1933–', school: 'desarrollo', img: '',
+        bio: 'Economista y filósofo indio, premio Nobel en 1998. Profesor en Harvard y Cambridge, transformó la economía del desarrollo al proponer que el objetivo del progreso no es el crecimiento del ingreso sino la expansión de las capacidades humanas: las libertades reales de las personas para elegir la vida que valoran. Su trabajo sobre hambrunas, desigualdad de género y democracia cambió la forma en que los organismos internacionales miden el desarrollo (fue clave en la creación del Índice de Desarrollo Humano del PNUD).',
+        ideas: [
+          'El enfoque de capacidades: el desarrollo debe evaluarse por las libertades sustantivas que las personas pueden ejercer.',
+          'Las hambrunas son crisis de acceso (entitlements), no de escasez absoluta de alimentos.',
+          'La democracia y la libertad de prensa son constitutivas del desarrollo.'
+        ],
+        works: 'Development as Freedom (1999), Poverty and Famines (1981), The Idea of Justice (2009).'
+      }
+    ]
+  },
+  {
+    label: 'Economía conductual · 1970–presente',
+    economists: [
+      {
+        name: 'Daniel Kahneman', dates: '1934–2024', school: 'conductual', img: '',
+        bio: 'Psicólogo israelí-estadounidense, premio Nobel de Economía en 2002 (siendo psicólogo, no economista). Junto con Amos Tversky, demostró mediante décadas de experimentos que las decisiones humanas se desvían sistemáticamente de la racionalidad postulada por la teoría económica estándar. Su trabajo transformó la economía, las finanzas, la medicina y las políticas públicas, al mostrar que los sesgos cognitivos no son ruido aleatorio sino patrones predecibles y universales.',
+        ideas: [
+          'Los heurísticos (representatividad, disponibilidad, anclaje) generan sesgos cognitivos sistemáticos.',
+          'Prospect theory: las personas son aversas a las pérdidas y evalúan ganancias y pérdidas respecto a un punto de referencia.',
+          'Sistema 1 (rápido, intuitivo) y Sistema 2 (lento, deliberado).'
+        ],
+        works: 'Prospect Theory (1979, con Tversky), Thinking, Fast and Slow (2011).'
+      },
+      {
+        name: 'Richard Thaler', dates: '1945–', school: 'conductual', img: '',
+        bio: 'Economista estadounidense, profesor en la Universidad de Chicago, premio Nobel en 2017. Integró los hallazgos de la psicología cognitiva en la teoría económica formal y popularizó los "nudges" (empujoncitos) como herramienta de política pública. Su trabajo mostró que fenómenos como la contabilidad mental, el efecto dotación y la miopía temporal son ubicuos en las decisiones financieras, y que pequeños cambios en la arquitectura de las opciones pueden mejorar sustancialmente las decisiones de las personas sin restringir su libertad.',
+        ideas: [
+          'La contabilidad mental: las personas categorizan el dinero en compartimentos y deciden de manera diferente según la categoría.',
+          'El efecto dotación: las personas valoran más un bien cuando lo poseen.',
+          'Los nudges: modificaciones en la arquitectura de decisiones que guían el comportamiento sin restringir la libertad.'
+        ],
+        works: "Nudge (2008, con Sunstein), Misbehaving (2015)."
+      }
+    ]
+  },
+  {
+    label: 'Economía contemporánea · 1990–presente',
+    desc: 'Las fronteras actuales de la disciplina: información asimétrica, desigualdad patrimonial a largo plazo, instituciones inclusivas vs. extractivas, automatización e inteligencia artificial, y evaluación experimental de políticas contra la pobreza.',
+    economists: [
+      {
+        name: 'Joseph Stiglitz', dates: '1943–', school: 'contemporanea', img: '',
+        bio: 'Economista estadounidense, premio Nobel en 2001 (compartido con Akerlof y Spence). Profesor en Columbia, fue economista jefe del Banco Mundial (1997-2000) y presidente del Consejo de Asesores Económicos de Clinton. Sus trabajos sobre la información asimétrica demostraron que los mercados con información imperfecta no se comportan como predice el modelo competitivo estándar, lo que abrió un campo entero de investigación sobre fallas de mercado, regulación financiera y economía de los seguros. Se ha convertido en uno de los críticos más influyentes de la globalización tal como ha sido gestionada por las instituciones financieras internacionales.',
+        ideas: [
+          'La información asimétrica genera fallas de mercado: selección adversa y riesgo moral.',
+          'Con información imperfecta, los mercados no son eficientes en el sentido de Pareto (Greenwald-Stiglitz).',
+          'La globalización, tal como ha sido gestionada, ha aumentado la desigualdad.'
+        ],
+        works: 'Globalization and Its Discontents (2002), The Price of Inequality (2012).'
+      },
+      {
+        name: 'Thomas Piketty', dates: '1971–', school: 'contemporanea', img: '',
+        bio: 'Economista francés, profesor en la EHESS y la Paris School of Economics. Su trabajo empírico sobre la distribución de la riqueza a largo plazo, basado en registros fiscales de más de veinte países durante dos siglos, reavivó el debate global sobre desigualdad y capitalismo. El Capital en el siglo XXI (2013) se convirtió en un fenómeno editorial sin precedentes para un libro de economía académica, vendiendo millones de copias y provocando un debate que trascendió la disciplina.',
+        ideas: [
+          'Cuando la tasa de retorno del capital (r) supera la tasa de crecimiento (g), la riqueza heredada tiende a concentrarse.',
+          'La desigualdad extrema es producto de configuraciones institucionales e históricas, no un resultado inevitable.',
+          'Propone un impuesto global progresivo sobre el patrimonio neto.'
+        ],
+        works: 'Le Capital au XXIe siècle (2013), Capital et idéologie (2019).'
+      },
+      {
+        name: 'Daron Acemoglu', dates: '1967–', school: 'contemporanea', img: '',
+        bio: 'Economista turco-estadounidense, profesor del MIT, premio Nobel en 2024 (compartido con Simon Johnson y James Robinson). Uno de los economistas más citados del mundo, su investigación vincula las instituciones políticas y económicas con las trayectorias de desarrollo de los países a lo largo de siglos. Why Nations Fail (2012) se convirtió en una referencia obligada en ciencia política y economía del desarrollo, argumentando que la diferencia entre prosperidad y pobreza se explica por instituciones inclusivas vs. extractivas, no por geografía, cultura o ignorancia.',
+        ideas: [
+          'Las instituciones inclusivas promueven innovación y crecimiento; las extractivas concentran poder y generan estancamiento.',
+          'El colonialismo produjo una "inversión de la fortuna" institucional.',
+          'La automatización y la IA pueden profundizar la desigualdad si las ganancias se concentran en propietarios de la tecnología.'
+        ],
+        works: 'Why Nations Fail (2012, con Robinson), Power and Progress (2023, con Johnson).'
+      },
+      {
+        name: 'Esther Duflo', dates: '1972–', school: 'contemporanea', img: '',
+        bio: 'Economista francesa, profesora del MIT, premio Nobel en 2019 (compartido con Banerjee y Kremer), la persona más joven y la segunda mujer en recibirlo en economía. Cofundadora del Abdul Latif Jameel Poverty Action Lab (J-PAL), impulsó la revolución de los ensayos aleatorizados controlados (RCT) en la economía del desarrollo, transformando la manera en que se diseñan, implementan y evalúan las políticas contra la pobreza en el mundo.',
+        ideas: [
+          'Las políticas contra la pobreza deben evaluarse con ensayos aleatorizados controlados (RCT).',
+          'Intervenciones pequeñas y bien diseñadas pueden tener efectos desproporcionadamente positivos.',
+          'La "economía del fontanero": los economistas deben ocuparse del diseño fino de los mecanismos de política.'
+        ],
+        works: 'Poor Economics (2011, con Banerjee), Good Economics for Hard Times (2019, con Banerjee).'
+      }
+    ]
+  }
+];
+
+// ===== FUNCIONES =====
+function getInitials(name) {
+  const skip = ['de','von','del','la','le','du','des','el','los','las','di'];
+  const parts = name.split(' ').filter(p => !skip.includes(p.toLowerCase()));
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  return parts[0].substring(0,2).toUpperCase();
+}
+
+function avatarHTML(ec, size) {
+  if (ec.img) return `<img src="${ec.img}" alt="Retrato de ${ec.name}">`;
+  const cls = size === 'lg' ? 'initials-lg' : 'initials';
+  return `<span class="${cls}">${getInitials(ec.name)}</span>`;
+}
+
+// Leyenda
+const legendEl = document.getElementById('legend');
+let activeSchoolFilter = null;
+
+Object.entries(SCHOOLS).forEach(([key, s]) => {
+  const item = document.createElement('button');
+  item.className = 'legend-item';
+  item.dataset.school = key;
+  item.setAttribute('role', 'switch');
+  item.setAttribute('aria-checked', 'false');
+  item.setAttribute('aria-label', `Filtrar por ${s.label}`);
+  item.title = s.desc;
+  item.innerHTML = `<span class="legend-swatch" style="background:${s.color}" aria-hidden="true">${s.symbol}</span>${s.label}`;
+  item.addEventListener('click', () => toggleSchoolFilter(key));
+  legendEl.appendChild(item);
+});
+
+function toggleSchoolFilter(school) {
+  if (activeSchoolFilter === school) {
+    activeSchoolFilter = null;
+    document.querySelectorAll('.legend-item').forEach(li => {
+      li.classList.remove('dimmed');
+      li.setAttribute('aria-checked', 'false');
+    });
+    document.querySelectorAll('.economist-node').forEach(n => n.classList.remove('school-dimmed'));
+  } else {
+    activeSchoolFilter = school;
+    document.querySelectorAll('.legend-item').forEach(li => {
+      const match = li.dataset.school === school;
+      li.classList.toggle('dimmed', !match);
+      li.setAttribute('aria-checked', match ? 'true' : 'false');
+    });
+    document.querySelectorAll('.economist-node').forEach(n => {
+      n.classList.toggle('school-dimmed', n.dataset.school !== school);
+    });
+  }
+}
+
+// Timeline
+const timelineEl = document.getElementById('timeline');
+
+ERAS.forEach(era => {
+  const eraDiv = document.createElement('div');
+  eraDiv.className = 'era';
+
+  const label = document.createElement('div');
+  label.className = 'era-label';
+  label.textContent = era.label;
+  eraDiv.appendChild(label);
+
+  if (era.desc) {
+    const desc = document.createElement('div');
+    desc.className = 'era-desc';
+    desc.textContent = era.desc;
+    eraDiv.appendChild(desc);
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'economists-grid';
+
+  era.economists.forEach(ec => {
+    const node = document.createElement('button');
+    node.className = 'economist-node';
+    node.dataset.school = ec.school;
+    node.dataset.name = ec.name;
+    node.style.setProperty('--node-color', SCHOOLS[ec.school].color);
+    node.setAttribute('aria-label', `${ec.name}, ${SCHOOLS[ec.school].label}, ${ec.dates}`);
+
+    node.innerHTML = `
+      <div class="node-avatar">${avatarHTML(ec, 'sm')}</div>
+      <div class="node-info">
+        <div class="node-name">${ec.name}</div>
+        <div class="node-dates">${ec.dates}</div>
+        <div class="node-school-tag"><span class="tag-symbol" aria-hidden="true">${SCHOOLS[ec.school].symbol}</span> ${SCHOOLS[ec.school].label}</div>
+      </div>
+    `;
+
+    node.addEventListener('click', () => openBio(ec));
+    grid.appendChild(node);
+  });
+
+  eraDiv.appendChild(grid);
+  timelineEl.appendChild(eraDiv);
+});
+
+// Panel
+const bioPanel = document.getElementById('bioPanel');
+const bioContent = document.getElementById('bioContent');
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('closePanel');
+
+function openBio(ec) {
+  document.querySelectorAll('.economist-node.active').forEach(n => n.classList.remove('active'));
+  const clicked = document.querySelector(`.economist-node[data-name="${CSS.escape(ec.name)}"]`);
+  if (clicked) clicked.classList.add('active');
+
+  const schoolColor = SCHOOLS[ec.school].color;
+  bioPanel.style.setProperty('--panel-color', schoolColor);
+
+  const ideasHtml = ec.ideas.map(idea => `<p>${idea}</p>`).join('');
+
+  bioContent.innerHTML = `
+    <div class="bio-avatar" style="border-color:${schoolColor}">${avatarHTML(ec, 'lg')}</div>
+    <h2>${ec.name}</h2>
+    <div class="bio-dates">${ec.dates}</div>
+    <div class="bio-school" style="background:${schoolColor}15;color:${schoolColor}">
+      <span aria-hidden="true">${SCHOOLS[ec.school].symbol}</span> ${SCHOOLS[ec.school].label}
+    </div>
+    <div class="bio-text">${ec.bio}</div>
+    <div class="bio-ideas">
+      <h3>Posturas e ideas principales</h3>
+      ${ideasHtml}
+    </div>
+    <div class="bio-works">
+      <h3>Obras principales</h3>
+      <p>${ec.works}</p>
+    </div>
+  `;
+
+  bioPanel.classList.add('visible');
+  overlay.classList.add('visible');
+  closeBtn.focus();
+}
+
+function closeBio() {
+  bioPanel.classList.remove('visible');
+  overlay.classList.remove('visible');
+  const active = document.querySelector('.economist-node.active');
+  if (active) { active.classList.remove('active'); active.focus(); }
+}
+
+closeBtn.addEventListener('click', closeBio);
+overlay.addEventListener('click', closeBio);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBio(); });
+
+// Búsqueda: muestra SOLO los resultados, oculta el timeline completo
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchResultsGrid = document.getElementById('searchResultsGrid');
+const searchResultsHeader = document.getElementById('searchResultsHeader');
+
+function normalize(str) {
+  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+searchInput.addEventListener('input', () => {
+  const q = normalize(searchInput.value);
+  if (q.length === 0) {
+    searchResults.classList.remove('active');
+    timelineEl.classList.remove('searching');
+    document.getElementById('quizSection').classList.remove('searching');
+    document.querySelector('.site-footer').classList.remove('searching');
+    searchResultsGrid.innerHTML = '';
+    return;
+  }
+  const matches = [];
+  ERAS.forEach(era => {
+    era.economists.forEach(ec => {
+      const n = normalize(ec.name);
+      const s = normalize(SCHOOLS[ec.school].label);
+      const d = normalize(ec.dates);
+      const b = normalize(ec.bio);
+      if (n.includes(q) || s.includes(q) || d.includes(q) || b.includes(q)) matches.push(ec);
+    });
+  });
+  timelineEl.classList.add('searching');
+  document.getElementById('quizSection').classList.add('searching');
+  document.querySelector('.site-footer').classList.add('searching');
+  searchResults.classList.add('active');
+  searchResultsHeader.textContent = matches.length
+    ? `${matches.length} resultado${matches.length > 1 ? 's' : ''} para "${searchInput.value}"`
+    : `Sin resultados para "${searchInput.value}"`;
+  searchResultsGrid.innerHTML = '';
+  matches.forEach(ec => {
+    const node = document.createElement('button');
+    node.className = 'economist-node';
+    node.style.setProperty('--node-color', SCHOOLS[ec.school].color);
+    node.innerHTML = `
+      <div class="node-avatar">${avatarHTML(ec, 'sm')}</div>
+      <div class="node-info">
+        <div class="node-name">${ec.name}</div>
+        <div class="node-dates">${ec.dates}</div>
+        <div class="node-school-tag"><span class="tag-symbol" aria-hidden="true">${SCHOOLS[ec.school].symbol}</span> ${SCHOOLS[ec.school].label}</div>
+      </div>`;
+    node.addEventListener('click', () => openBio(ec));
+    searchResultsGrid.appendChild(node);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ===== CUESTIONARIO =====
+const QUIZ = [
+  { q: '¿De dónde viene la riqueza de un país?', opts: [
+    { text: 'Del trabajo y la división de tareas especializadas.', scores: { clasica: 3, neoclasica: 1 } },
+    { text: 'De sus instituciones: reglas del juego claras y justas.', scores: { institucionalismo: 3, contemporanea: 1 } },
+    { text: 'De la tierra y los recursos naturales bien gestionados.', scores: { fisiocracia: 3, griegos: 1 } },
+    { text: 'Del conocimiento disperso entre millones de personas libres.', scores: { austriaca: 3, chicago: 1 } },
+  ]},
+  { q: '¿Cuál es el papel ideal del Estado en la economía?', opts: [
+    { text: 'Mínimo: proteger la propiedad y dejar que el mercado se autorregule.', scores: { clasica: 2, austriaca: 2, chicago: 1 } },
+    { text: 'Activo: estimular la demanda cuando hay desempleo, regular las finanzas.', scores: { keynesiana: 3, postkeynesiana: 1 } },
+    { text: 'Estratégico: proteger industrias nacionales, invertir en capacidades.', scores: { mercantilismo: 2, desarrollo: 2 } },
+    { text: 'Transformador: superar las relaciones de explotación del capitalismo.', scores: { marxismo: 3 } },
+  ]},
+  { q: '¿Qué determina el precio de un celular?', opts: [
+    { text: 'La cantidad de trabajo que costó producirlo.', scores: { clasica: 2, marxismo: 2 } },
+    { text: 'La utilidad que le da la última unidad disponible.', scores: { marginalismo: 3, neoclasica: 1 } },
+    { text: 'El poder de mercado de la empresa que lo fabrica.', scores: { postkeynesiana: 2, institucionalismo: 1 } },
+    { text: 'Lo que la persona "siente" que vale, influida por sesgos.', scores: { conductual: 3 } },
+  ]},
+  { q: '¿Por qué hay crisis económicas?', opts: [
+    { text: 'Porque los bancos centrales distorsionan el tipo de interés.', scores: { austriaca: 3, chicago: 1 } },
+    { text: 'Porque la estabilidad engendra exceso de confianza y deuda.', scores: { postkeynesiana: 3, keynesiana: 1 } },
+    { text: 'Porque el capitalismo tiene contradicciones internas.', scores: { marxismo: 3 } },
+    { text: 'Porque las instituciones no reducen la incertidumbre.', scores: { institucionalismo: 2, contemporanea: 2 } },
+  ]},
+  { q: '¿Cómo se combate la pobreza?', opts: [
+    { text: 'Con crecimiento libre: el mercado competitivo eleva a todos.', scores: { clasica: 2, chicago: 2 } },
+    { text: 'Con inversión pública, empleo estatal y redistribución.', scores: { keynesiana: 2, desarrollo: 1, postkeynesiana: 1 } },
+    { text: 'Expandiendo las libertades y capacidades reales de las personas.', scores: { desarrollo: 3 } },
+    { text: 'Con intervenciones pequeñas evaluadas con experimentos rigurosos.', scores: { contemporanea: 2, conductual: 2 } },
+  ]},
+  { q: '¿Las personas toman decisiones racionales?', opts: [
+    { text: 'Sí: buscan maximizar su bienestar con la información disponible.', scores: { neoclasica: 2, chicago: 2 } },
+    { text: 'No del todo: usan atajos mentales con errores sistemáticos.', scores: { conductual: 3 } },
+    { text: 'La racionalidad importa menos que las estructuras de poder.', scores: { marxismo: 2, institucionalismo: 1, postkeynesiana: 1 } },
+    { text: 'Actúan bajo incertidumbre radical, no calculable.', scores: { keynesiana: 2, austriaca: 2 } },
+  ]},
+  { q: '¿Qué pensás de la desigualdad económica?', opts: [
+    { text: 'Es resultado del mérito y la libertad; redistribuir frena la productividad.', scores: { austriaca: 2, chicago: 2 } },
+    { text: 'Tiene raíces institucionales; con buenas reglas se reduce sin frenar el crecimiento.', scores: { institucionalismo: 2, contemporanea: 2 } },
+    { text: 'Es inherente al capitalismo: r > g concentra la riqueza.', scores: { marxismo: 1, contemporanea: 2, postkeynesiana: 1 } },
+    { text: 'Es un problema de capacidades: importan las libertades reales.', scores: { desarrollo: 3, keynesiana: 1 } },
+  ]},
+];
+
+const QP = {
+  griegos:          { title: 'Raíces aristotélicas', text: 'Un pensamiento con veta filosófica profunda. Se comparte con los griegos la preocupación por distinguir lo necesario de lo excesivo. La economía es, ante todo, una cuestión ética sobre los fines de la actividad humana.', recipe: 'Reflexión moral sobre los fines (Aristóteles) + atención a las instituciones (Escolástica) + escepticismo frente a la crematística.' },
+  escolastica:      { title: 'Justicia y precio justo', text: 'Preocupa que las transacciones sean justas y equitativas. Los escolásticos buscaban el precio justo y condenaban la usura; la clave es que el sistema tenga brújula moral.', recipe: 'Justicia conmutativa (Aquino) + comprensión monetaria (Azpilcueta) + derecho natural aplicado (Vitoria, Molina).' },
+  premodernos:      { title: 'Empirismo y propiedad', text: 'Se valora la observación empírica y la fundamentación filosófica de los derechos económicos. Propiedad del trabajo, ajuste automático de balanzas, y atención a quién recibe primero el dinero nuevo.', recipe: 'Propiedad del trabajo (Locke) + flujo de especie (Hume) + efecto Cantillon.' },
+  mercantilismo:    { title: 'Estrategia nacional', text: 'La economía se piensa como instrumento de poder nacional. Interesa que el Estado proteja la industria, promueva exportaciones y garantice autosuficiencia productiva.', recipe: 'Proteccionismo selectivo (Colbert) + balanza comercial (Mun) + política industrial activa.' },
+  fisiocracia:      { title: 'Naturalismo económico', text: 'La economía tiene un orden natural que funciona mejor sin interferencias. La riqueza real viene de la tierra y los recursos, el sistema se autorregula.', recipe: 'Laissez faire (Quesnay) + capital productivo (Turgot) + naturaleza como fundamento.' },
+  clasica:          { title: 'Liberalismo clásico', text: 'Se confía en la división del trabajo, el libre comercio y la ventaja comparativa. El mercado coordina decisiones descentralizadas; el crecimiento resuelve muchos problemas.', recipe: 'Mano invisible (Smith) + ventaja comparativa (Ricardo) + ley de Say + libertad de Mill.' },
+  marxismo:         { title: 'Crítica del sistema', text: 'La economía es un campo de relaciones de poder donde el capital explota el trabajo. Las crisis son consecuencias de contradicciones internas, y la solución es transformar las relaciones de producción.', recipe: 'Plusvalía (Marx) + imperialismo (Luxemburgo) + materialismo histórico.' },
+  marginalismo:     { title: 'Formalismo del valor', text: 'El valor depende de lo que aporta la última unidad, y la economía puede formularse matemáticamente. Valorás la precisión analítica.', recipe: 'Utilidad marginal (Jevons) + subjetivismo (Menger) + equilibrio general (Walras).' },
+  neoclasica:       { title: 'Optimización racional', text: 'Los mercados bajo competencia tienden al equilibrio y la eficiencia. Las políticas corrigen fallas puntuales, no sustituyen el mecanismo de precios.', recipe: 'Oferta y demanda (Marshall) + eficiencia de Pareto + impuestos pigouvianos.' },
+  austriaca:        { title: 'En defensa del orden espontáneo', text: 'Desconfiás de la planificación central. El mercado es un proceso de descubrimiento, los precios son señales insustituibles, y la libertad económica es inseparable de la política.', recipe: 'Conocimiento disperso (Hayek) + cálculo socialista imposible (Mises) + ciclos crediticios.' },
+  keynesiana:       { title: 'Pragmatismo de la demanda', text: 'Los mercados pueden fallar de manera prolongada y devastadora. El desempleo masivo no se corrige solo; el Estado debe intervenir con política fiscal para estabilizar la demanda.', recipe: 'Demanda efectiva (Keynes) + IS-LM (Hicks) + síntesis neoclásica (Samuelson) + animal spirits.' },
+  chicago:          { title: 'Monetarismo racional', text: 'Se confía en los mercados y en la disciplina monetaria. La inflación es siempre monetaria, las expectativas racionales limitan las políticas, y los incentivos explican casi todo.', recipe: 'Regla monetaria (Friedman) + expectativas racionales (Lucas) + capital humano (Becker).' },
+  institucionalismo:{ title: 'Arquitectura de reglas', text: 'Las instituciones lo explican casi todo. Las reglas del juego, los mecanismos de cumplimiento y las trayectorias históricas determinan la prosperidad.', recipe: 'Consumo conspicuo (Veblen) + costos de transacción y path dependence (North).' },
+  postkeynesiana:   { title: 'Escepticismo financiero', text: 'La inestabilidad financiera es endógena al capitalismo: la calma engendra especulación, la especulación engendra crisis. La distribución importa para el crecimiento.', recipe: 'Inestabilidad financiera (Minsky) + competencia imperfecta (Robinson) + incertidumbre fundamental.' },
+  desarrollo:       { title: 'Humanismo del desarrollo', text: 'El ingreso per cápita no basta. Importan las libertades reales, las capacidades humanas, el acceso a educación y salud. Desarrollo es expandir lo que las personas pueden ser y hacer.', recipe: 'Capacidades (Sen) + economía dual (Lewis) + evidencia experimental (Duflo).' },
+  conductual:       { title: 'Psicología económica', text: 'Las personas no deciden como los modelos predicen. Los sesgos, la aversión a pérdidas y la contabilidad mental son reales. Los nudges son más efectivos que las prohibiciones.', recipe: 'Heurísticos y sesgos (Kahneman) + nudges (Thaler) + arquitectura de decisiones.' },
+  contemporanea:    { title: 'Eclecticismo basado en evidencia', text: 'Se toman herramientas de varias tradiciones y se evalúan con datos. Información asimétrica, desigualdad patrimonial, instituciones inclusivas y evaluación experimental.', recipe: 'Información imperfecta (Stiglitz) + r > g (Piketty) + instituciones (Acemoglu) + RCTs (Duflo).' },
+};
+
+const quizQuestionsEl = document.getElementById('quizQuestions');
+QUIZ.forEach((item, i) => {
+  const div = document.createElement('div');
+  div.className = 'quiz-q';
+  div.innerHTML = `<p>${i+1}. ${item.q}</p>` + item.opts.map((o,j) =>
+    `<label><input type="radio" name="q${i}" value="${j}"> ${o.text}</label>`
+  ).join('');
+  quizQuestionsEl.appendChild(div);
+});
+
+document.getElementById('quizSubmit').addEventListener('click', () => {
+  const scores = {};
+  Object.keys(SCHOOLS).forEach(k => scores[k] = 0);
+  let answered = 0;
+  QUIZ.forEach((item, i) => {
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if (sel) { answered++; Object.entries(item.opts[+sel.value].scores).forEach(([s,p]) => scores[s] = (scores[s]||0)+p); }
+  });
+  if (answered < QUIZ.length) { alert('Respondé todas las preguntas.'); return; }
+  const sorted = Object.entries(scores).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  const topKey = sorted[0][0], profile = QP[topKey], topSchool = SCHOOLS[topKey];
+  const mixLabel = sorted.slice(0,3).map(([k])=>SCHOOLS[k].label).join(' + ');
+  document.getElementById('quizResultTitle').textContent = profile.title;
+  const sEl = document.getElementById('quizResultSchool');
+  sEl.textContent = `${topSchool.symbol} ${topSchool.label}`; sEl.style.color = topSchool.color;
+  document.getElementById('quizResultDesc').textContent = profile.text;
+  document.getElementById('quizResultRecipe').innerHTML =
+    `<strong>Tu receta (${mixLabel}):</strong> ${profile.recipe}` +
+    (sorted.length > 3 ? `<br><br><strong>También tenés notas de:</strong> ${sorted.slice(3,6).map(([k])=>SCHOOLS[k].label).join(', ')}.` : '');
+  const r = document.getElementById('quizResult'); r.classList.add('visible'); r.scrollIntoView({behavior:'smooth'});
+});
+
+document.getElementById('quizReset').addEventListener('click', () => {
+  document.querySelectorAll('#quizQuestions input').forEach(r => r.checked = false);
+  document.getElementById('quizResult').classList.remove('visible');
+  document.getElementById('quizSection').scrollIntoView({behavior:'smooth'});
+});
+
+
+// ===== AUTO-CARGA DE IMÁGENES DESDE WIKIPEDIA =====
+const WIKI_NAMES = {
+  "Jenofonte": "Xenophon",
+  "Platón": "Plato",
+  "Aristóteles": "Aristotle",
+  "Tomás de Aquino": "Thomas_Aquinas",
+  "Francisco de Vitoria": "Francisco_de_Vitoria",
+  "Martín de Azpilcueta": "Martín_de_Azpilcueta",
+  "Tomás de Mercado": "Tomás_de_Mercado",
+  "Luis de Molina": "Luis_de_Molina",
+  "John Locke": "John_Locke",
+  "David Hume": "David_Hume",
+  "Richard Cantillon": "Richard_Cantillon",
+  "Jean-Baptiste Colbert": "Jean-Baptiste_Colbert",
+  "Thomas Mun": "Thomas_Mun",
+  "François Quesnay": "François_Quesnay",
+  "Anne Robert Jacques Turgot": "Anne_Robert_Jacques_Turgot",
+  "Adam Smith": "Adam_Smith",
+  "David Ricardo": "David_Ricardo",
+  "Thomas Malthus": "Thomas_Robert_Malthus",
+  "John Stuart Mill": "John_Stuart_Mill",
+  "Jean-Baptiste Say": "Jean-Baptiste_Say",
+  "Karl Marx": "Karl_Marx",
+  "Rosa Luxemburgo": "Rosa_Luxemburg",
+  "William Stanley Jevons": "William_Stanley_Jevons",
+  "Carl Menger": "Carl_Menger",
+  "Léon Walras": "Léon_Walras",
+  "Alfred Marshall": "Alfred_Marshall",
+  "Vilfredo Pareto": "Vilfredo_Pareto",
+  "Arthur C. Pigou": "Arthur_Cecil_Pigou",
+  "Ludwig von Mises": "Ludwig_von_Mises",
+  "Friedrich Hayek": "Friedrich_Hayek",
+  "John Maynard Keynes": "John_Maynard_Keynes",
+  "John Hicks": "John_Hicks",
+  "Paul Samuelson": "Paul_Samuelson",
+  "Milton Friedman": "Milton_Friedman",
+  "Gary Becker": "Gary_Becker",
+  "Robert Lucas": "Robert_Lucas_Jr.",
+  "Thorstein Veblen": "Thorstein_Veblen",
+  "Douglass North": "Douglass_North",
+  "Joan Robinson": "Joan_Robinson",
+  "Hyman Minsky": "Hyman_Minsky",
+  "Arthur Lewis": "W._Arthur_Lewis",
+  "Amartya Sen": "Amartya_Sen",
+  "Daniel Kahneman": "Daniel_Kahneman",
+  "Richard Thaler": "Richard_Thaler",
+  "Joseph Stiglitz": "Joseph_Stiglitz",
+  "Thomas Piketty": "Thomas_Piketty",
+  "Daron Acemoglu": "Daron_Acemoglu",
+  "Esther Duflo": "Esther_Duflo"
+};
+
+async function loadWikiImages() {
+  const entries = Object.entries(WIKI_NAMES);
+  const batchSize = 10;
+  for (let i = 0; i < entries.length; i += batchSize) {
+    const batch = entries.slice(i, i + batchSize);
+    const titles = batch.map(([,wiki]) => wiki).join('|');
+    try {
+      const resp = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(titles)}&prop=pageimages&format=json&pithumbsize=200&origin=*`
+      );
+      const data = await resp.json();
+      const pages = data.query.pages;
+      for (const page of Object.values(pages)) {
+        if (page.thumbnail && page.thumbnail.source) {
+          const imgUrl = page.thumbnail.source;
+          const displayName = batch.find(([,wiki]) => wiki.replace(/_/g,' ') === page.title);
+          if (displayName) {
+            updateImages(displayName[0], imgUrl);
+          }
+        }
+      }
+    } catch(e) { /* silently skip failed batches */ }
+  }
+}
+
+function updateImages(name, url) {
+  const nodes = document.querySelectorAll(`.economist-node[data-name="${CSS.escape(name)}"]`);
+  nodes.forEach(node => {
+    const avatar = node.querySelector('.node-avatar');
+    if (avatar) avatar.innerHTML = `<img src="${url}" alt="Retrato de ${name}" loading="lazy">`;
+  });
+  // Also update the ERAS data so the bio panel shows the image
+  ERAS.forEach(era => {
+    era.economists.forEach(ec => {
+      if (ec.name === name) ec.img = url;
+    });
+  });
+}
+
+// Load images after the page renders
+window.addEventListener('load', loadWikiImages);
+
+</script>
+</body>
+</html>
